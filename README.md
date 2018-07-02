@@ -3,8 +3,8 @@
 
 #### Table of Contents  
 ##### Tensorflow in Python  
-##### TensorflowJS  
-[Headers](#headers)  
-[Emphasis](#emphasis)  
-...snip...    
-<a name="headers"/>
+<a href="https://github.com/MAGSON-dev/ml/blob/master/tensorflow/linear_regression.py">Linear regression<a/>
+<a href="https://github.com/MAGSON-dev/ml/blob/master/tensorflow/polynomial_regression.py">Polynomial regression<a/>
+##### TensorflowJS
+<a href="https://github.com/MAGSON-dev/ml/blob/master/tensorflow/polynomial_regression.py">Regression<a/>
+
