@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Snake</title>
+	<style type="text/css">
+		body{
+			background-color: #263238;
+			font-family: roboto;
+		}
+		#scoreText{
+			color: #039386;
+		}
+		#gc{
+			background-color: #039386;
+			padding: 5px;
+			border-radius: 2px;
+			display: table;
+			margin: 0 auto;
+			top: 0;
+		}
+		#scoreText{
+			font-weight: 300;
+			font-size: 30px;
+			display: table;
+			margin-left: 30px;
+		}
+	</style>
+</head>
+<body>
+<p id="scoreText">Score: 0</p>
+<canvas id="gc" width="400" height="400"></canvas>
+<script>
+window.onload=function() {
+    canv=document.getElementById("gc");
+    ctx=canv.getContext("2d");
+    document.addEventListener("keydown",keyPush);
+    setInterval(game,100);   
+}
+
+px=py=10;
+gs=tc=20;
+ax=ay=15;
+xv=yv=0;
+trail=[];
+tail = 5;
+score = 0;
+running = false;
+function game() {
+    px+=xv;
+    py+=yv;
+    // hvis slangen går utenfor område
+    if(px<0) {
+        px= tc-1;
+    }
+    if(px>tc-1) {
+        px= 0;
+    }
+    if(py<0) {
+        py= tc-1;
+    }
+    if(py>tc-1) {
+        py= 0;
+    }
+    ctx.fillStyle="#263238";
+    ctx.fillRect(0,0,canv.width,canv.height);
+ 
+    ctx.fillStyle="#039386";
+    for(var i=0;i<trail.length;i++) {
+        ctx.fillRect(trail[i].x*gs,trail[i].y*gs,gs-2,gs-2);
+        // kræsjet i seg selv
+        if((trail[i].x==px && trail[i].y==py) && running == true) {
+            tail = 5;
+            console.log("kræsjet");
+            reset();
+        }
+    }
+    trail.push({x:px,y:py});
+    while(trail.length>tail) {
+    trail.shift();
+    }
+ 
+ 	// spiste en mat
+    if(ax==px && ay==py) {
+    	updateScore();
+        tail++;
+        ax=Math.floor(Math.random()*tc);
+        ay=Math.floor(Math.random()*tc);
+        console.log("mat");
+    }
+    ctx.fillStyle="white";
+    ctx.fillRect(ax*gs,ay*gs,gs-2,gs-2);
+}
+function keyPush(evt) {
+	running = true;
+    switch(evt.keyCode) {
+        case 37:
+        	//venstre
+            if (xv < 1) {
+                xv=-1;yv=0;
+            }
+            break;
+        case 38:
+        	// opp
+            if (yv < 1) {
+                xv=0;yv=-1;
+            }
+            break;
+        case 39:
+        	// høyre
+            if (xv > -1) {
+                xv=1;yv=0;
+            }
+            break;
+        case 40:
+        	// ned
+            if (yv > -1) {
+                xv=0;yv=1;
+            }
+            break;
+    }
+}
+function updateScore(){
+	score++;
+	document.getElementById("scoreText").innerHTML = "Score: " + score;
+}
+function reset(){
+	score = 0;
+	document.getElementById("scoreText").innerHTML = "Score: " + score;
+}
+</script>
+</body>
+</html>
