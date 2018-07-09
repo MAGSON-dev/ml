@@ -1,3 +1,5 @@
+[![Gitter](https://img.shields.io/badge/chat-on%20gitter-blue.svg)](https://gitter.im/MAGSON-dev/Lobby)
+
 <h1 align="center">Magson - Machine Learning Experiments</h1>
 <h4 align="center">
     <strong>This is the official repositories with all of Magson's machine learning experiments and notes.</strong>
