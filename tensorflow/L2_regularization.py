@@ -1,5 +1,5 @@
 """
-This is an example of L2 regularization. It prints out the final cost with 
+This is an example of L2 regularization. It prints out the final cost of 
 100 different regularization rates evenly spaced between 0 and 1.  
 """
 
