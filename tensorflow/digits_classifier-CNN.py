@@ -58,23 +58,6 @@ def normal_full_layer(input_layer,size):
 init = tf.global_variables_initializer()
 epochs = 5000
 
-with tf.Session() as sess:
-  sess.run(init)
-  
-  for i in range(epochs):
-    batch_x, batch_y = mnist.train.next_batch(50)
-    
-    sess.run(train,feed_dict={x:batch_x,y_true:batch_y,hold_probabilities:0.5})
-    
-    if i%100 == 0:
-      print("On step: {}".format(i))
-      print("Accuracy: ")
-      
-      matches = tf.equal(tf.argmax(y_pred,1),tf.argmax(y_true,1))
-      accuracy = tf.reduce_mean(tf.cast(matches,tf.float32))
-      
-      print(sess.run(accuracy,feed_dict={x:mnist.test.images,y_true:mnist.test.labels,hold_probabilities:1.0}))
-      print('\n')
 
 # Placeholders
 
@@ -107,3 +90,21 @@ cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(labels
 optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
 train = optimizer.minimize(cross_entropy)
 
+
+with tf.Session() as sess:
+  sess.run(init)
+  
+  for i in range(epochs):
+    batch_x, batch_y = mnist.train.next_batch(50)
+    
+    sess.run(train,feed_dict={x:batch_x,y_true:batch_y,hold_probabilities:0.5})
+    
+    if i%100 == 0:
+      print("On step: {}".format(i))
+      print("Accuracy: ")
+      
+      matches = tf.equal(tf.argmax(y_pred,1),tf.argmax(y_true,1))
+      accuracy = tf.reduce_mean(tf.cast(matches,tf.float32))
+      
+      print(sess.run(accuracy,feed_dict={x:mnist.test.images,y_true:mnist.test.labels,hold_probabilities:1.0}))
+      print('\n')
