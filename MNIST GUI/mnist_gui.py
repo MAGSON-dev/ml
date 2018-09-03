@@ -1,26 +1,35 @@
 
 import tensorflow as tf
-import Tkinter as tk
 from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
+import math
+
+import matplotlib
+matplotlib.use('TkAgg')
+
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
+import sys
+if sys.version_info[0] < 3:
+    import Tkinter as tk
+else:
+    import tkinter as tk
 
+
+# Initialize weight
 def init_weights(shape):
     init_random_dist = tf.truncated_normal(shape, stddev=0.1)
     return tf.Variable(init_random_dist)
 
 # Initialize biases
-
-
 def init_bias(shape):
     init_bias_vals = tf.constant(0.1, shape=shape)
     return tf.Variable(init_bias_vals)
 
 # Convolutional 2D
-
-
 def conv2d(x, W):
     # x = [batch, Height, Width,Color channels]
     # W = [filter height, filter width, color channels in, color channels out]
@@ -28,15 +37,12 @@ def conv2d(x, W):
     return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
 
 # Pooling layer
-
-
 def max_pool_2by2(x):
     # x = [batch, Height, Width,Color channels]
 
     return tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
 
 # Convolutional layer
-
 
 def convolutional_layer(input_x, shape):
     W = init_weights(shape)
@@ -45,7 +51,6 @@ def convolutional_layer(input_x, shape):
 
 # Normal layer
 
-
 def normal_full_layer(input_layer, size):
     input_size = int(input_layer.get_shape()[1])
     W = init_weights([input_size, size])
@@ -53,15 +58,15 @@ def normal_full_layer(input_layer, size):
     return tf.matmul(input_layer, W) + b
 
 
-init = tf.global_variables_initializer()
-epochs = 5000
-
 # Placeholders
 
 x = tf.placeholder(tf.float32, shape=[None, 784])
 y_true = tf.placeholder(tf.float32, shape=[None, 10])
 
+accuracy_percent = 0
+
 # Layers
+
 x_image = tf.reshape(x, [-1, 28, 28, 1])
 convo_1 = convolutional_layer(x_image, shape=[5, 5, 1, 32])
 convo_1_pooling = max_pool_2by2(convo_1)
@@ -73,6 +78,7 @@ convo_2_flat = tf.reshape(convo_2_pooling, [-1, 7*7*64])
 full_layer_one = tf.nn.relu(normal_full_layer(convo_2_flat, 1024))
 
 # Dropout
+
 hold_probabilities = tf.placeholder(tf.float32)
 full_one_dropout = tf.nn.dropout(full_layer_one, keep_prob=hold_probabilities)
 
@@ -80,15 +86,17 @@ y_pred = normal_full_layer(full_one_dropout, 10)
 
 # Loss function
 
-cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(labels=y_true, logits=y_pred))
+cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(labels=y_true, logits=y_pred)
 
 # Optimizer and trainer
 
 optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
 train = optimizer.minimize(cross_entropy)
 
+init = tf.global_variables_initializer()
+epochs = 200
 
-def train():
+def trainGraph():
     with tf.Session() as sess:
         sess.run(init)
 
@@ -99,30 +107,43 @@ def train():
 
             if i % 100 == 0:
                 print("On step: {}".format(i))
-                print("Accuracy: ")
 
                 matches = tf.equal(tf.argmax(y_pred, 1), tf.argmax(y_true, 1))
                 accuracy = tf.reduce_mean(tf.cast(matches, tf.float32))
 
-                print(sess.run(accuracy, feed_dict={x: mnist.test.images, y_true: mnist.test.labels, hold_probabilities: 1.0}))
-                print('\n')
+                accuracy_percent = sess.run(accuracy, feed_dict={x: mnist.test.images, y_true: mnist.test.labels, hold_probabilities: 1.0})
+                accuracy_percent = accuracy_percent * 100
+                accuracy_percent = math.floor(accuracy_percent)
+                print(accuracy_percent)
+            if i == epochs - 1:
+                print("finished")
+                updateAcc(accuracy_percent)
+            
+def runGraph():
+ print("magnusen er kulere enn leo")
 
+def hide_widget(e):
+    e.widget.pack_forget()
 
-def run():
-    print("magson er best")
+def disable_widget(e):
+    x.config(state="normal")
 
 
 root = tk.Tk()
-# Code to add widgets will go here...
-btnTrain = tk.Button(text="Train AI", command=lambda: train())
-btnRun = tk.Button(text="Run AI", command=lambda: run())
-img = tk.PhotoImage()
-label = tk.Label()
+root.wm_title("MNIST, CNN")
+btnTrain = tk.Button(text="Train AI", command=lambda: trainGraph())
+btnRun = tk.Button(text="Run AI", command=lambda: runGraph())
+text_label = tk.StringVar()
+text_label.set("0%")
+label = tk.Label(textvariable=text_label).pack()
 
-panel = tk.Label(root, image=img)
+def updateAcc(acc):
+    text_label.set(str(acc)+"%")
 
-panel.pack(side="bottom", fill="both", expand="yes")
-label.pack()
+# canvas=FigureCanvasTkAgg(x_image, master=root)
+# canvas.show()
+
+
 btnTrain.pack()
 btnRun.pack()
 root.mainloop()
