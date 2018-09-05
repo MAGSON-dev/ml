@@ -16,7 +16,7 @@ else:
     import tkinter as tk
 
 
-""" # Initialize weights
+# Initialize weights
 
 def init_weights(shape):
   init_random_dist = tf.truncated_normal(shape,stddev=0.1)
@@ -97,10 +97,10 @@ train = optimizer.minimize(cross_entropy)
 init = tf.global_variables_initializer()
 
 epochs = 300
-accuracy_percent = 0 """
+accuracy_percent = 0
 
 def trainGraph():
-    """ with tf.Session() as sess:
+     with tf.Session() as sess:
         sess.run(init)
 
         for i in range(epochs):
@@ -119,7 +119,7 @@ def trainGraph():
                 accuracy_percent = math.floor(accuracy_percent)
                 print(accuracy_percent)
             if i == epochs - 1:
-                updateAcc(accuracy_percent) """
+                updateAcc(accuracy_percent)
 
             
 
