@@ -4,10 +4,9 @@ from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 import math
 import matplotlib
-# matplotlib.use('TkAgg')
-# from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-# from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
+matplotlib.use('TkAgg')
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib import pylab as plt
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
 import sys
@@ -17,7 +16,7 @@ else:
     import tkinter as tk
 
 
-# Initialize weights
+""" # Initialize weights
 
 def init_weights(shape):
   init_random_dist = tf.truncated_normal(shape,stddev=0.1)
@@ -98,10 +97,10 @@ train = optimizer.minimize(cross_entropy)
 init = tf.global_variables_initializer()
 
 epochs = 300
-accuracy_percent = 0
+accuracy_percent = 0 """
 
 def trainGraph():
-    with tf.Session() as sess:
+    """ with tf.Session() as sess:
         sess.run(init)
 
         for i in range(epochs):
@@ -120,13 +119,15 @@ def trainGraph():
                 accuracy_percent = math.floor(accuracy_percent)
                 print(accuracy_percent)
             if i == epochs - 1:
-                updateAcc(accuracy_percent)
+                updateAcc(accuracy_percent) """
+
             
 
 def runGraph():
  print("RUNNING GRAPH")
- with tf.Session() as sess:
-        sess.run(init)
+ i = np.random.randint(0, 5000)
+ data = mnist.train.images[i].reshape(28, 28)
+ showImage(data)
 
 
 def hide_widget(e):
@@ -135,24 +136,33 @@ def hide_widget(e):
 def disable_widget(e):
     x.config(state="normal")
 
-root = tk.Tk()
-root.wm_title("MNIST, CNN")
-btnTrain = tk.Button(text="Train AI", command=lambda: trainGraph())
-btnRun = tk.Button(text="Run AI", command=lambda: runGraph())
-text_label = tk.StringVar()
-text_label.set("0%")
-label = tk.Label(textvariable=text_label).pack()
+
+def showImage(image):
+    fig = plt.figure(figsize=(5, 4))
+    _ = plt.imshow(image, cmap='gray_r')
+    plt.axis('off')
+    canvas = FigureCanvasTkAgg(fig, master=root)
+    # Todo:
+    canvas.get_tk_widget().delete('all')
+
+    canvas.show()
+    # Todo:
+    canvas.get_tk_widget().place(anchor='ne')
+    canvas.get_tk_widget().pack(fill=tk.BOTH, expand=1)
+
 
 def updateAcc(acc):
     text_label.set(str(acc)+"%")
 
-def showImage(image):
-    return "magnus"
 
-# canvas=FigureCanvasTkAgg(x_image, master=root)
-# canvas.show()
+root = tk.Tk()
+root.wm_title("Train Ai")
+frame = tk.Frame(root, width=420, height=200).pack()
+text_label = tk.StringVar()
+text_label.set("0%")
+label = tk.Label(textvariable=text_label).pack()
 
+btnTrain = tk.Button(text="Train AI", command=lambda: trainGraph()).pack()
+btnRun = tk.Button(text="Run AI", command=lambda: runGraph()).pack()
 
-btnTrain.pack()
-btnRun.pack()
 root.mainloop()
