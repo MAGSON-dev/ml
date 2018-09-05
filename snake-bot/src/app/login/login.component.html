@@ -1,0 +1,28 @@
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+</head>
+
+<header>
+  <div id="progressbar" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
+    <div class="mdc-linear-progress__buffering-dots"></div>
+    <div class="mdc-linear-progress__buffer"></div>
+    <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+      <span class="mdc-linear-progress__bar-inner"></span>
+    </div>
+    <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+      <span class="mdc-linear-progress__bar-inner"></span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <h1>Sign in to Snake Bot</h1>
+  <br>
+  <ul>
+    <li>
+      <button class="btn-google btn" (click)="signInWithGoogle()">Sign in with Google </button>
+    </li>
+
+  </ul>
+</main>

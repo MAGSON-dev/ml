@@ -77,8 +77,8 @@ function keyPush(evt) {
     switch (evt.keyCode) {
         case 37:
             // left key pushed
-            if (snakeDirectionX < 1) {
-                snakeDirectionX = -1; snakeDirectionY = 0;
+            if (this.snakeDirectionX < 1) {
+                this.snakeDirectionX = -1; this.snakeDirectionY = 0;
             }
             break;
         case 38:

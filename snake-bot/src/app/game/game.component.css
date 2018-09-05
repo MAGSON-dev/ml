@@ -1,0 +1,24 @@
+#gc {
+    background-color: #039386;
+    padding: 5px;
+    border-radius: 2px;
+    display: table;
+    margin: 0 auto;
+    top: 0;
+}
+
+p {
+    display: inline-block;
+    font-weight: 300;
+    font-size: 30px;
+}
+
+#scoreText {
+    margin-left: 30px;
+}
+
+#krTxt {
+    float: right;
+    margin-right: 30px;
+}
+
