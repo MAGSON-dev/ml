@@ -43,6 +43,7 @@ for epoch in range(training_epochs):
 
 w_val = sess.run(w)
 print(w_val)
+print(type(w_val))
 
 sess.close()
 
@@ -50,6 +51,6 @@ plt.scatter(trX, trY)
 trY2 = 0
 for i in range(num_coeffs):
     trY2 += w_val[i] * np.power(trX, i)
-
+    
 plt.plot(trX, trY2, 'r')
 plt.show()
