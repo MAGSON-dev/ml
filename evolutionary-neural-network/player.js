@@ -75,8 +75,11 @@ class Player {
         this.yVel += this.yAcc;
         this.yPos += this.speed * this.yVel;
 
-        ctx.fillStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b}`;
-        ctx.fillRect(this.xPos, this.yPos, this.width, this.height);
+        if (drawBool) {
+            ctx.fillStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b}`;
+            ctx.fillRect(this.xPos, this.yPos, this.width, this.height);
+        }
+
     }
 
     dispose() {
