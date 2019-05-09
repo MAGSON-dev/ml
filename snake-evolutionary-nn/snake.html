@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Snake</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.4/dist/tf.min.js"></script>
+    <style type="text/css">
+        body {
+            background-color: #263238;
+            font-family: roboto;
+        }
+
+        #scoreText {
+            color: #039386;
+            text-align: center;
+        }
+
+        #gc {
+            background-color: #039386;
+            padding: 5px;
+            border-radius: 2px;
+            display: table;
+            margin: 0 auto;
+            top: 0;
+        }
+
+        #scoreText {
+            font-weight: 300;
+            font-size: 30px;
+            display: table;
+            margin-left: 30px;
+        }
+
+        #killAllBtn {
+            margin: 16px auto 0 auto;
+            border: none;
+            padding: 10px;
+            font-size: 15px;
+            border-radius: 4px;
+            display: table;
+            background: #039386;
+            color: #263238;
+        }
+    </style>
+</head>
+
+<body>
+    <p id="scoreText">Score: 0</p>
+    <canvas id="gc" width="400" height="400"></canvas>
+    <button id="killAllBtn">Kill all snakes</button>
+    <script>
+        canv = document.getElementById("gc");
+        ctx = canv.getContext("2d");
+    </script>
+    <script src="nn.js"></script>
+    <script src="player.js"></script>
+    <script src="food.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
