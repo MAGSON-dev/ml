@@ -12,7 +12,7 @@ for (let i = 0; i < TOTAL; i++) {
 let generationNumber = 0;
 let bestScore = 0;
 let bestTotalPlayer;
-let showOnlyBestTotalPlayer = true;
+let showOnlyBestTotalPlayer = false;
 
 tf.setBackend('cpu');
 
