@@ -16,7 +16,7 @@ let showOnlyBestTotalPlayer = false;
 
 tf.setBackend('cpu');
 
-setInterval(draw, 150);
+setInterval(draw, 75);
 function draw() {
     // Clear canvas
     ctx.fillStyle = "#263238";

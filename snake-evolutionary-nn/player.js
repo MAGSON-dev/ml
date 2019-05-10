@@ -10,6 +10,9 @@ class Player {
     tail = 5;
 
     score = 0;
+    fitness = 0;
+    movesLeft = 200;
+    lifeTime = 0;
 
     color = {
         r: Math.floor(Math.random() * 256),
@@ -23,7 +26,7 @@ class Player {
         if (brain) {
             this.brain = brain.copy();
         } else {
-            this.brain = new NeuralNetwork(10, 12, 4);
+            this.brain = new NeuralNetwork(8, 12, 4);
         }
     }
 
@@ -61,18 +64,21 @@ class Player {
     }
 
     think() {
-
         let inputs = [];
         inputs[0] = this.x / boardLength;
         inputs[1] = this.y / boardLength;
-        inputs[2] = this.dirX;
-        inputs[3] = this.dirY
-        inputs[4] = this.food.x / boardLength;
-        inputs[5] = this.food.y / boardLength;
-        inputs[6] = this.checkDistanceToDeath(0) / boardLength;
-        inputs[7] = this.checkDistanceToDeath(1) / boardLength;
-        inputs[8] = this.checkDistanceToDeath(2) / boardLength;
-        inputs[9] = this.checkDistanceToDeath(3) / boardLength;
+        inputs[2] = (this.dirX == 1) ? 1 : 0;
+        inputs[3] = (this.dirX == -1) ? 1 : 0;
+        inputs[4] = (this.dirY == 1) ? 1 : 0;
+        inputs[5] = (this.dirY == -1) ? 1 : 0;
+        // inputs[2] = this.dirX;
+        // inputs[3] = this.dirY
+        inputs[6] = this.food.x / boardLength;
+        inputs[7] = this.food.y / boardLength;
+        // inputs[6] = this.checkDistanceToDeath(0) / boardLength;
+        // inputs[7] = this.checkDistanceToDeath(1) / boardLength;
+        // inputs[8] = this.checkDistanceToDeath(2) / boardLength;
+        // inputs[9] = this.checkDistanceToDeath(3) / boardLength;
 
         let output = this.brain.predict(inputs);
         let bestMove;
@@ -154,9 +160,22 @@ class Player {
 
         // spiste en mat
         if (this.food.x == this.x && this.food.y == this.y) {
-            this.score++;
             this.tail++;
             this.food = new Food(this);
+            this.movesLeft = 200;
+        }
+
+        this.lifeTime++;
+        this.movesLeft--;
+
+        if (this.movesLeft < 1) {
+            this.gameOver();
+        }
+
+        if (this.tail < 10) {
+            this.score = Math.floor(this.lifeTime * this.lifeTime * Math.pow(2, Math.floor(this.tail)));
+        } else {
+            this.score = this.lifeTime * this.lifeTime * Math.pow(2, 10) * (this.tail - 9);
         }
 
         this.food.draw();
