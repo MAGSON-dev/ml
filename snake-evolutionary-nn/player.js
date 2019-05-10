@@ -26,7 +26,7 @@ class Player {
         if (brain) {
             this.brain = brain.copy();
         } else {
-            this.brain = new NeuralNetwork(8, 12, 4);
+            this.brain = new NeuralNetwork(14, 18, 4);
         }
     }
 
@@ -34,7 +34,7 @@ class Player {
         savedPlayers.push(players.splice(players.indexOf(this), 1)[0]);
     }
 
-    checkDistanceToDeath(dir) {
+    checkDistanceToHit(dir, object) {
         let distance = 1;
         let x = 0;
         let y = 0;
@@ -53,11 +53,17 @@ class Player {
         }
         let crash = false;
         while (crash == false && distance < boardLength) {
-            this.trail.forEach(t => {
-                if (this.x + x * distance == t.x && this.y + y * distance == t.x) {
+            if (object == 0) {
+                this.trail.forEach(t => {
+                    if (this.x + x * distance == t.x && this.y + y * distance == t.x) {
+                        crash = true;
+                    }
+                });
+            } else {
+                if (this.x + x * distance == this.food.x && this.y + y * distance == this.food.y) {
                     crash = true;
                 }
-            });
+            }
             distance++;
         }
         return distance;
@@ -65,20 +71,29 @@ class Player {
 
     think() {
         let inputs = [];
+        
         inputs[0] = this.x / boardLength;
         inputs[1] = this.y / boardLength;
+
         inputs[2] = (this.dirX == 1) ? 1 : 0;
         inputs[3] = (this.dirX == -1) ? 1 : 0;
         inputs[4] = (this.dirY == 1) ? 1 : 0;
         inputs[5] = (this.dirY == -1) ? 1 : 0;
         // inputs[2] = this.dirX;
         // inputs[3] = this.dirY
-        inputs[6] = this.food.x / boardLength;
-        inputs[7] = this.food.y / boardLength;
-        // inputs[6] = this.checkDistanceToDeath(0) / boardLength;
-        // inputs[7] = this.checkDistanceToDeath(1) / boardLength;
-        // inputs[8] = this.checkDistanceToDeath(2) / boardLength;
-        // inputs[9] = this.checkDistanceToDeath(3) / boardLength;
+        // inputs[6] = this.food.x / boardLength;
+        // inputs[7] = this.food.y / boardLength;
+        inputs[6] = this.checkDistanceToHit(0, 0) / boardLength;
+        inputs[7] = this.checkDistanceToHit(1, 0) / boardLength;
+        inputs[8] = this.checkDistanceToHit(2, 0) / boardLength;
+        inputs[9] = this.checkDistanceToHit(3, 0) / boardLength;
+
+        inputs[10] = this.checkDistanceToHit(0, 1) / boardLength;
+        inputs[11] = this.checkDistanceToHit(1, 1) / boardLength;
+        inputs[12] = this.checkDistanceToHit(2, 1) / boardLength;
+        inputs[13] = this.checkDistanceToHit(3, 1) / boardLength;
+
+        // console.log(inputs);
 
         let output = this.brain.predict(inputs);
         let bestMove;
