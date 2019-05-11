@@ -26,7 +26,7 @@ class Player {
         if (brain) {
             this.brain = brain.copy();
         } else {
-            this.brain = new NeuralNetwork(14, 18, 4);
+            this.brain = new NeuralNetwork(16, 18, 4);
         }
     }
 
@@ -59,8 +59,13 @@ class Player {
                         crash = true;
                     }
                 });
-            } else {
+            } else if (object == 1) {
                 if (this.x + x * distance == this.food.x && this.y + y * distance == this.food.y) {
+                    crash = true;
+                }
+            } else {
+                if ((this.x + x * distance == boardLength || this.x + x * distance == 0)
+                || (this.y + y * distance == boardLength || this.y + y * distance == 0)) {
                     crash = true;
                 }
             }
@@ -71,27 +76,34 @@ class Player {
 
     think() {
         let inputs = [];
-        
-        inputs[0] = this.x / boardLength;
-        inputs[1] = this.y / boardLength;
 
-        inputs[2] = (this.dirX == 1) ? 1 : 0;
-        inputs[3] = (this.dirX == -1) ? 1 : 0;
-        inputs[4] = (this.dirY == 1) ? 1 : 0;
-        inputs[5] = (this.dirY == -1) ? 1 : 0;
+        // Wall
+        inputs[0] = this.checkDistanceToHit(0, 3) / boardLength;
+        inputs[1] = this.checkDistanceToHit(1, 3) / boardLength;
+        inputs[2] = this.checkDistanceToHit(2, 3) / boardLength;
+        inputs[3] = this.checkDistanceToHit(3, 3) / boardLength;
+
+        // Direction hot encoded
+        inputs[4] = (this.dirX == 1) ? 1 : 0;
+        inputs[5] = (this.dirX == -1) ? 1 : 0;
+        inputs[6] = (this.dirY == 1) ? 1 : 0;
+        inputs[7] = (this.dirY == -1) ? 1 : 0;
         // inputs[2] = this.dirX;
         // inputs[3] = this.dirY
         // inputs[6] = this.food.x / boardLength;
         // inputs[7] = this.food.y / boardLength;
-        inputs[6] = this.checkDistanceToHit(0, 0) / boardLength;
-        inputs[7] = this.checkDistanceToHit(1, 0) / boardLength;
-        inputs[8] = this.checkDistanceToHit(2, 0) / boardLength;
-        inputs[9] = this.checkDistanceToHit(3, 0) / boardLength;
 
-        inputs[10] = this.checkDistanceToHit(0, 1) / boardLength;
-        inputs[11] = this.checkDistanceToHit(1, 1) / boardLength;
-        inputs[12] = this.checkDistanceToHit(2, 1) / boardLength;
-        inputs[13] = this.checkDistanceToHit(3, 1) / boardLength;
+        // Crash itself
+        inputs[8] = this.checkDistanceToHit(0, 0) / boardLength;
+        inputs[9] = this.checkDistanceToHit(1, 0) / boardLength;
+        inputs[10] = this.checkDistanceToHit(2, 0) / boardLength;
+        inputs[11] = this.checkDistanceToHit(3, 0) / boardLength;
+
+        // Food
+        inputs[12] = this.checkDistanceToHit(0, 1) / boardLength;
+        inputs[13] = this.checkDistanceToHit(1, 1) / boardLength;
+        inputs[14] = this.checkDistanceToHit(2, 1) / boardLength;
+        inputs[15] = this.checkDistanceToHit(3, 1) / boardLength;
 
         // console.log(inputs);
 

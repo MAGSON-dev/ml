@@ -3,7 +3,7 @@ const boardLength = 20;
 
 let players = [];
 let savedPlayers = [];
-const TOTAL = 500;
+const TOTAL = 750;
 // Create initial players
 for (let i = 0; i < TOTAL; i++) {
     players.push(new Player())
