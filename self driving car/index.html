@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Evolutionary neural network</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.4/dist/tf.min.js"></script>
+    <style type="text/css">
+        body {
+            background-color: #263238;
+            font-family: roboto;
+        }
+
+        canvas {
+            background-color: #039386;
+            border-radius: 2px;
+            display: table;
+            margin: 0 auto;
+            top: 0;
+        }
+
+        #scoreTxt {
+            color: #039386;
+            font-weight: 300;
+            font-size: 30px;
+            display: table;
+            margin-left: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3 id="scoreTxt">0</h3>
+    <canvas height="500" width="1000"></canvas>
+    <label>Draw</label>
+    <input type="checkbox" id="checkbox" checked onclick="onClickHandler()">
+    <script>
+        const canvas = document.querySelector('canvas');
+        const ctx = canvas.getContext("2d");
+
+        let drawBool = true;
+
+        const checkbox = document.getElementById('checkbox');
+        function onClickHandler() {
+            drawBool = checkbox.checked;
+        }
+
+    </script>
+    <script src="nn.js"></script>
+    <script src="player.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
