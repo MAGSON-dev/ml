@@ -1,13 +1,13 @@
 class Player {
 
-    x = 100;
-    y = 100;
+    position = new Vector(100, 100);
+    velocityVector = new Vector(0, 0);
     rotation = 0;
 
     width = 30;
     height = 60;
 
-    steeringDirection = 0; // 
+    steeringDirection = 0; //
     velocity = 0;
     acceleration = 0;
 
@@ -41,19 +41,20 @@ class Player {
     }
 
     draw() {
-        ctx.translate((this.x + this.x + this.width) / 2, (this.y + this.y + this.height) / 2);
-        ctx.rotate((this.rotation / 180) * Math.PI);
-        ctx.translate(-(this.x + this.x + this.width) / 2, -(this.y + this.y + this.height) / 2);
+        // ctx.translate((this.x + this.x + this.width) / 2, (this.position.y + this.position.y + this.height) / 2);
+        // ctx.rotate((this.rotation / 180) * Math.PI);
+        // ctx.translate(-(this.x + this.x + this.width) / 2, -(this.position.y + this.position.y + this.height) / 2);
 
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
 
+        this.velocityVector = new Vector(this.velocity * Math.cos(this.rotation), this.velocity * Math.sin(this.rotation))
 
         this.velocity += this.acceleration;
-        this.y += this.velocity;
+        this.position.add(this.velocityVector);
 
         this.rotation += this.steeringDirection;
 
-        if (this.velocity > 2) {
+        if (this.velocity >  2) {
             this.velocity = 2;
         }
     }
