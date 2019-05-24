@@ -11,15 +11,21 @@ let score = 0;
 let generationNumber = 0;
 let bestScore = 0;
 
-setInterval(draw, 50);
-
 const scoreTxt = document.getElementById('scoreTxt');
 
 tf.setBackend('cpu');
 
+const background = new Image();
+background.src = "tracks/track-2.jpg";
+
+draw();
+
 function draw() {
+    requestAnimationFrame(draw);
     // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    ctx.drawImage(background,0,0);  
 
     players.forEach(player => player.draw());
 

@@ -10,7 +10,7 @@ class Vector {
     }
 
     add(vector) {
-        this.x = vector.x;
-        this.y = vector.y;
+        this.x += vector.x;
+        this.y += vector.y;
     }
 }
